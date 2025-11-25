@@ -17,6 +17,14 @@ from google.genai.types import Content, Part
 # bench master is running on 8100
 # Python Prime generator  is on 8101
 
+go_agent = RemoteA2aAgent(
+    name="go_agent",
+    description="Mersenne prime number Agent written in Go",
+    agent_card=(
+        f"http://127.0.0.1:8102/{AGENT_CARD_WELL_KNOWN_PATH}"
+    ),
+)
+
 
 python_agent = RemoteA2aAgent(
     name="python_agent",
@@ -35,7 +43,7 @@ root_agent = LlmAgent(
         and benchmark the time in each sub agent
 
     """,
-    sub_agents=[python_agent]
+    sub_agents=[python_agent,go_agent]
 )
 
 runner = InMemoryRunner(agent=root_agent)

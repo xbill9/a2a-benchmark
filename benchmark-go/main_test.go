@@ -34,15 +34,15 @@ func TestIsPrime(t *testing.T) {
 	}
 }
 
-func TestGenerateMersennePrimes(t *testing.T) {
+func TestGeneratePrimes(t *testing.T) {
 	tests := []struct {
 		name     string
-		args     generateMersennePrimesArgs
+		args     generatePrimesArgs
 		contains []string
 	}{
 		{
-			name:     "Up to 5",
-			args:     generateMersennePrimesArgs{Limit: 5},
+			name:     "First 5 Mersenne primes",
+			args:     generatePrimesArgs{Count: 5}, // 2, 3, 5, 7, 13 -> all Mersenne exponents for known small Mersenne primes
 			contains: []string{"Elapsed time:"},
 		},
 	}
@@ -51,13 +51,13 @@ func TestGenerateMersennePrimes(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := generateMersennePrimes(tc, tt.args)
+			got, err := generatePrimes(tc, tt.args)
 			if err != nil {
-				t.Fatalf("generateMersennePrimes() error = %v; want nil", err)
+				t.Fatalf("generatePrimes() error = %v; want nil", err)
 			}
 			for _, c := range tt.contains {
 				if !strings.Contains(got, c) {
-					t.Errorf("generateMersennePrimes() = %q; want to contain %q", got, c)
+					t.Errorf("generatePrimes() = %q; want to contain %q", got, c)
 				}
 			}
 		})

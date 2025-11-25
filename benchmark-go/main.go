@@ -18,8 +18,8 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"math/big"
 	"os"
-	"strconv"
 	"time"
 
 	"google.golang.org/adk/agent"
@@ -46,25 +46,43 @@ func isPrime(n int) bool {
 	return true
 }
 
-type generateMersennePrimesArgs struct {
-	Limit int `json:"limit" jsonschema:"The maximum exponent p to check for Mersenne primes M_p = 2^p - 1. Maximum supported is 61."`
+type generatePrimesArgs struct {
+	Count int `json:"count" jsonschema:"The number of Mersenne primes to generate."`
 }
 
-func generateMersennePrimes(tc tool.Context, args generateMersennePrimesArgs) (string, error) {
+func generatePrimes(tc tool.Context, args generatePrimesArgs) (string, error) {
 	start := time.Now()
 	var mPrimes []string
-	limit := args.Limit
-	if limit > 61 {
-		limit = 61
+	count := args.Count
+
+	// isMersennePrime checks if M_p = 2^p - 1 is prime using Lucas-Lehmer test
+	isMersennePrime := func(p int) (bool, *big.Int) {
+		if p == 2 {
+			return true, big.NewInt(3)
+		}
+		m := new(big.Int).Lsh(big.NewInt(1), uint(p))
+		m.Sub(m, big.NewInt(1))
+
+		s := big.NewInt(4)
+		two := big.NewInt(2)
+		for i := 0; i < p-2; i++ {
+			s.Mul(s, s)
+			s.Sub(s, two)
+			s.Mod(s, m)
+		}
+		return s.Sign() == 0, m
 	}
 
-	for p := 2; p <= limit; p++ {
+	p := 2
+	found := 0
+	for found < count {
 		if isPrime(p) {
-			mersenne := (1 << p) - 1
-			if isPrime(mersenne) {
-				mPrimes = append(mPrimes, strconv.Itoa(mersenne))
+			if ok, val := isMersennePrime(p); ok {
+				mPrimes = append(mPrimes, val.String())
+				found++
 			}
 		}
+		p++
 	}
 
 	elapsed := time.Since(start)
@@ -97,12 +115,12 @@ func main() {
 	slog.SetDefault(logger)
 
 	ctx := context.Background()
-	mersenneTool, err := functiontool.New(functiontool.Config{
-		Name:        "generate_mersenne_primes",
-		Description: "Generate Mersenne primes up to a given exponent limit and measure execution time.",
-	}, generateMersennePrimes)
+	primesTool, err := functiontool.New(functiontool.Config{
+		Name:        "generate_primes",
+		Description: "Generate the first x Mersenne primes and measure execution time.",
+	}, generatePrimes)
 	if err != nil {
-		slog.Error("Failed to create generate_mersenne_primes tool", "error", err)
+		slog.Error("Failed to create generate_primes tool", "error", err)
 		os.Exit(1)
 	}
 
@@ -118,14 +136,14 @@ func main() {
 	}
 
 	primeAgent, err := llmagent.New(llmagent.Config{
-		Name:        "generate_mersenne_agent",
+		Name:        "mersenne_agent_go",
 		Description: "Generate Mersenne Primes in Go.",
 		Instruction: `
-			You can generate Mersenne primes.
-			To generate Mersenne primes, use the generate_mersenne_primes tool.
+			You can generate Mersenne primes in Go.
+			generate the first x Mersenne primes and return the elapsed time.
     `,
 		Model: model,
-		Tools: []tool.Tool{mersenneTool},
+		Tools: []tool.Tool{primesTool},
 	})
 	if err != nil {
 		slog.Error("Failed to create agent", "error", err)
