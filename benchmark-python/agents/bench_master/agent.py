@@ -58,6 +58,7 @@ root_agent = LlmAgent(
         of the first mersenne prime
         the second time for the list of the first 2 mersenne primes,
         next the list of the first 3 mersenne primes, up to the list of the first 20 primes
+        after each iteration print the elapsed time
 
     """,
     sub_agents=[python_agent,go_agent,node_agent]

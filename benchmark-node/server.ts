@@ -17,7 +17,7 @@ console.log(`Agent configured with MODEL_NAME: ${MODEL_NAME}`);
 // 1. Define your agent's identity card.
 const primeAgentCard: AgentCard = {
   name: "Mersenne Prime Agent Node",
-  description: `A node agent that finds the first X Mersenne primes and reports the elapsed time. Configured with model: ${MODEL_NAME}.`,
+  description: `A node agent that builds a list of the first n Mersenne primes and reports the elapsed time. Configured with model: ${MODEL_NAME}.`,
   protocolVersion: "0.3.0",
   version: "0.1.0",
   url: "http://0.0.0.0:8103/", // The public URL of your agent server
@@ -25,7 +25,7 @@ const primeAgentCard: AgentCard = {
     {
       id: "find-mersenne-node",
       name: "Find Mersenne Primes in node",
-      description: "Finds the first X Mersenne primes in node",
+      description: "Finds the list of the first n Mersenne primes in Node",
       tags: ["math", "benchmark"]
     }
   ],
