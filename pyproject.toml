@@ -1,0 +1,9 @@
+[project]
+name = "a2a-hello-world"
+version = "0.1.0"
+dependencies = [
+    "google-adk",
+    "google-cloud-aiplatform",
+    "a2a-sdk",
+    "httpx",
+]

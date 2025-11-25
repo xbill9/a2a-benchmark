@@ -1,0 +1,11 @@
+# Dev environment
+pip
+autopep8
+flake8
+black
+
+# App
+google-adk==1.18.0
+google-cloud-aiplatform
+google-adk[a2a]==1.18.0
+fastmcp
