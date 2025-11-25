@@ -1,0 +1,31 @@
+---
+name: Python Agent
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/agents/a2a_hello_world/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'src/agents/a2a_hello_world/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+        working-directory: ./src/agents/a2a_hello_world
+      - name: Run tests
+        run: python -m unittest discover
+        working-directory: ./src/agents/a2a_hello_world
