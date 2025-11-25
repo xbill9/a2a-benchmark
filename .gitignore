@@ -116,3 +116,4 @@ dmypy.json
 .pyre/
 
 node_modules/
+benchmark-go/bench-go
