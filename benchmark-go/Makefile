@@ -30,7 +30,7 @@ clean:
 # Build the project for release
 release:
 	@echo "Building Release..."
-	@cd $(APP_DIR) && CGO_ENABLED=0 GOOS=linux go build -v -o $(SERVICE_NAME) .
+	@cd $(APP_DIR) && CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -trimpath -v -o $(SERVICE_NAME) .
 
 # Run tests
 test:

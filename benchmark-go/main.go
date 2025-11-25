@@ -129,6 +129,8 @@ func main() {
 		modelName = "gemini-2.5-flash"
 	}
 
+	slog.Info("Using Model ", "model", modelName)
+
 	model, err := gemini.NewModel(ctx, modelName, &genai.ClientConfig{})
 	if err != nil {
 		slog.Error("Failed to create model", "error", err)

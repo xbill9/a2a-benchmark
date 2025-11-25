@@ -1,10 +1,10 @@
-source $HOME/a2a-hello-world/set_env.sh
+source $HOME/a2a-benchmark/set_env.sh
 
 
-cd poly-node
+cd benchmark-node
 
 echo `pwd`
-echo staring a2a poly node generate prime
+echo staring a2a bench node generate prime
 make deps
 make build
 make run

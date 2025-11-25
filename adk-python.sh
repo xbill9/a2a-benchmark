@@ -1,7 +1,7 @@
-source $HOME/a2a-hello-world/set_env.sh
+source $HOME/a2a-benchmark/set_env.sh
 
-cd poly-python/agents
+cd benchmark-python/agents
 
 echo `pwd`
-echo poly python agents adk web
+echo benchmark python agents adk web
 adk web
