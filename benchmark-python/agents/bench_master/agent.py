@@ -50,6 +50,11 @@ root_agent = LlmAgent(
         You are the Master Benchmark Agent
         you delegate to your sub agents by the a2a protocol
         and benchmark the time in each sub agent
+        if the user asks to benchmark node call the node_agent
+        if the user asks to benchmark go call the go_agent
+        if the user asks to benchmark python call the python_agent
+        for each benchmark run it 20 times - the first time for 1 prime
+        the second time for 2 primes up to 20 primes
 
     """,
     sub_agents=[python_agent,go_agent,node_agent]
