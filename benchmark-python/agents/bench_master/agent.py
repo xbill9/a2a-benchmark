@@ -13,6 +13,7 @@ from fastmcp import FastMCP
 import asyncio
 from google.adk.runners import InMemoryRunner
 from google.genai.types import Content, Part
+import os
 
 # bench master is running on 8100
 # Python Prime generator  is on 8101
@@ -45,7 +46,7 @@ python_agent = RemoteA2aAgent(
 
 root_agent = LlmAgent(
     name="master_agent",
-    model="gemini-2.5-flash",
+    model=os.getenv("MODEL_NAME", "gemini-2.5-flash"),
     instruction="""
         You are the Master Benchmark Agent
         you delegate to your sub agents by the a2a protocol
@@ -53,12 +54,16 @@ root_agent = LlmAgent(
         if the user asks to benchmark node call the node_agent
         if the user asks to benchmark go call the go_agent
         if the user asks to benchmark python call the python_agent
-        for each benchmark run it 20 times - the first time for 1 prime
-        the second time for 2 primes up to 20 primes
+        for each benchmark run it 20 times - the first time for the list
+        of the first mersenne prime
+        the second time for the list of the first 2 mersenne primes,
+        next the list of the first 3 mersenne primes, up to the list of the first 20 primes
 
     """,
     sub_agents=[python_agent,go_agent,node_agent]
 )
+
+print(f"Master Agent is using model: {root_agent.model}")
 
 runner = InMemoryRunner(agent=root_agent)
 

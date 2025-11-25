@@ -5,6 +5,8 @@ from google.adk.a2a.utils.agent_to_a2a import to_a2a
 import uvicorn
 import time
 import sys
+import logging
+import os
 
 
 def find_mersenne_primes(count: int) -> dict:
@@ -51,18 +53,21 @@ def find_mersenne_primes(count: int) -> dict:
 
 
 root_agent = Agent(
-    name="mprime_agent",
-    model="gemini-2.5-flash",
-    description="Agent to calculate Mersenne primes.",
+    name="python_agent",
+    model=os.getenv("MODEL_NAME", "gemini-2.5-flash"),
+    description="Python Agent to calculate Mersenne primes.",
     instruction=(
         "You are a helpful agent who can calculate Mersenne primes "
-        "using the Lucas-Lehmer primality test. You can check individual "
-        "exponents or find the first N Mersenne primes. return the list as strings."
+        "using the Lucas-Lehmer primality test. You can  "
+        "find the list of the first N Mersenne primes. return the expired time."
     ),
     tools=[find_mersenne_primes],
 )
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
+    model_name = os.getenv("MODEL_NAME", "gemini-2.5-flash")
+    logging.info("Using model: %s", model_name)
     PORT = 8101
     a2a_app = to_a2a(root_agent, port=PORT)
     # Use host='0.0.0.0' to allow external access.

@@ -11,18 +11,21 @@ import {
 } from "@a2a-js/sdk/server";
 import { A2AExpressApp } from "@a2a-js/sdk/server/express";
 
+const MODEL_NAME = process.env.MODEL_NAME || "Not specified";
+console.log(`Agent configured with MODEL_NAME: ${MODEL_NAME}`);
+
 // 1. Define your agent's identity card.
 const primeAgentCard: AgentCard = {
   name: "Mersenne Prime Agent Node",
-  description: "A node agent that finds the first X Mersenne primes and reports the elapsed time.",
+  description: `A node agent that finds the first X Mersenne primes and reports the elapsed time. Configured with model: ${MODEL_NAME}.`,
   protocolVersion: "0.3.0",
   version: "0.1.0",
   url: "http://0.0.0.0:8103/", // The public URL of your agent server
   skills: [
     {
-      id: "find-mersenne-node", 
-      name: "Find Mersenne Primes in node", 
-      description: "Finds the first X Mersenne primes in node", 
+      id: "find-mersenne-node",
+      name: "Find Mersenne Primes in node",
+      description: "Finds the first X Mersenne primes in node",
       tags: ["math", "benchmark"]
     }
   ],
