@@ -59,7 +59,7 @@ root_agent = Agent(
     instruction=(
         "You are a helpful agent who can calculate Mersenne primes "
         "using the Lucas-Lehmer primality test. You can  "
-        "find the list of the first N Mersenne primes. return the expired time."
+        "generate the list of the first 'count' Mersenne primes. return the expired time."
     ),
     tools=[find_mersenne_primes],
 )
