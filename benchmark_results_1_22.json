@@ -1,0 +1,538 @@
+{
+  "Node.js": [
+    {
+      "n": 1,
+      "rtt_ms": 13.027412933297455,
+      "calc_ms": 0.04,
+      "text": "Found first 1 Mersenne primes in 0.04ms."
+    },
+    {
+      "n": 2,
+      "rtt_ms": 4.719056072644889,
+      "calc_ms": 0.02,
+      "text": "Found first 2 Mersenne primes in 0.02ms."
+    },
+    {
+      "n": 3,
+      "rtt_ms": 1.7538790125399828,
+      "calc_ms": 0.01,
+      "text": "Found first 3 Mersenne primes in 0.01ms."
+    },
+    {
+      "n": 4,
+      "rtt_ms": 5.392963998019695,
+      "calc_ms": 0.07,
+      "text": "Found first 4 Mersenne primes in 0.07ms."
+    },
+    {
+      "n": 5,
+      "rtt_ms": 1.9583149114623666,
+      "calc_ms": 0.01,
+      "text": "Found first 5 Mersenne primes in 0.01ms."
+    },
+    {
+      "n": 6,
+      "rtt_ms": 2.6289430679753423,
+      "calc_ms": 0.02,
+      "text": "Found first 6 Mersenne primes in 0.02ms."
+    },
+    {
+      "n": 7,
+      "rtt_ms": 1.4595119282603264,
+      "calc_ms": 0.01,
+      "text": "Found first 7 Mersenne primes in 0.01ms."
+    },
+    {
+      "n": 8,
+      "rtt_ms": 1.6863299533724785,
+      "calc_ms": 0.01,
+      "text": "Found first 8 Mersenne primes in 0.01ms."
+    },
+    {
+      "n": 9,
+      "rtt_ms": 1.8647679826244712,
+      "calc_ms": 0.02,
+      "text": "Found first 9 Mersenne primes in 0.02ms."
+    },
+    {
+      "n": 10,
+      "rtt_ms": 1.4992889482527971,
+      "calc_ms": 0.07,
+      "text": "Found first 10 Mersenne primes in 0.07ms."
+    },
+    {
+      "n": 11,
+      "rtt_ms": 1.67068000882864,
+      "calc_ms": 0.1,
+      "text": "Found first 11 Mersenne primes in 0.10ms."
+    },
+    {
+      "n": 12,
+      "rtt_ms": 1.4697050210088491,
+      "calc_ms": 0.11,
+      "text": "Found first 12 Mersenne primes in 0.11ms."
+    },
+    {
+      "n": 13,
+      "rtt_ms": 1.4460949460044503,
+      "calc_ms": 0.3,
+      "text": "Found first 13 Mersenne primes in 0.30ms."
+    },
+    {
+      "n": 14,
+      "rtt_ms": 1.6967650735750794,
+      "calc_ms": 0.56,
+      "text": "Found first 14 Mersenne primes in 0.56ms."
+    },
+    {
+      "n": 15,
+      "rtt_ms": 3.5563099663704634,
+      "calc_ms": 2.01,
+      "text": "Found first 15 Mersenne primes in 2.01ms."
+    },
+    {
+      "n": 16,
+      "rtt_ms": 7.209468982182443,
+      "calc_ms": 5.53,
+      "text": "Found first 16 Mersenne primes in 5.53ms."
+    },
+    {
+      "n": 17,
+      "rtt_ms": 15.004488988779485,
+      "calc_ms": 12.75,
+      "text": "Found first 17 Mersenne primes in 12.75ms."
+    },
+    {
+      "n": 18,
+      "rtt_ms": 20.867662969976664,
+      "calc_ms": 19.25,
+      "text": "Found first 18 Mersenne primes in 19.25ms."
+    },
+    {
+      "n": 19,
+      "rtt_ms": 43.22223493363708,
+      "calc_ms": 38.63,
+      "text": "Found first 19 Mersenne primes in 38.63ms."
+    },
+    {
+      "n": 20,
+      "rtt_ms": 40.65926792100072,
+      "calc_ms": 39.03,
+      "text": "Found first 20 Mersenne primes in 39.03ms."
+    },
+    {
+      "n": 21,
+      "rtt_ms": 129.31910692714155,
+      "calc_ms": 127.14,
+      "text": "Found first 21 Mersenne primes in 127.14ms."
+    },
+    {
+      "n": 22,
+      "rtt_ms": 215.7837909180671,
+      "calc_ms": 214.06,
+      "text": "Found first 22 Mersenne primes in 214.06ms."
+    }
+  ],
+  "Rust": [
+    {
+      "n": 1,
+      "rtt_ms": 2.8396869311109185,
+      "calc_ms": 0.0,
+      "text": "Found first 1 Mersenne primes in 0.00ms."
+    },
+    {
+      "n": 2,
+      "rtt_ms": 1.1075619840994477,
+      "calc_ms": 0.0,
+      "text": "Found first 2 Mersenne primes in 0.00ms."
+    },
+    {
+      "n": 3,
+      "rtt_ms": 0.8957489626482129,
+      "calc_ms": 0.0,
+      "text": "Found first 3 Mersenne primes in 0.00ms."
+    },
+    {
+      "n": 4,
+      "rtt_ms": 2.2327459882944822,
+      "calc_ms": 0.01,
+      "text": "Found first 4 Mersenne primes in 0.01ms."
+    },
+    {
+      "n": 5,
+      "rtt_ms": 0.7781710010021925,
+      "calc_ms": 0.01,
+      "text": "Found first 5 Mersenne primes in 0.01ms."
+    },
+    {
+      "n": 6,
+      "rtt_ms": 0.8871440077200532,
+      "calc_ms": 0.01,
+      "text": "Found first 6 Mersenne primes in 0.01ms."
+    },
+    {
+      "n": 7,
+      "rtt_ms": 0.8223510812968016,
+      "calc_ms": 0.01,
+      "text": "Found first 7 Mersenne primes in 0.01ms."
+    },
+    {
+      "n": 8,
+      "rtt_ms": 0.8480589604005218,
+      "calc_ms": 0.02,
+      "text": "Found first 8 Mersenne primes in 0.02ms."
+    },
+    {
+      "n": 9,
+      "rtt_ms": 0.6258690264075994,
+      "calc_ms": 0.02,
+      "text": "Found first 9 Mersenne primes in 0.02ms."
+    },
+    {
+      "n": 10,
+      "rtt_ms": 0.9613949805498123,
+      "calc_ms": 0.03,
+      "text": "Found first 10 Mersenne primes in 0.03ms."
+    },
+    {
+      "n": 11,
+      "rtt_ms": 0.8404660038650036,
+      "calc_ms": 0.05,
+      "text": "Found first 11 Mersenne primes in 0.05ms."
+    },
+    {
+      "n": 12,
+      "rtt_ms": 0.7072859443724155,
+      "calc_ms": 0.07,
+      "text": "Found first 12 Mersenne primes in 0.07ms."
+    },
+    {
+      "n": 13,
+      "rtt_ms": 0.918028992600739,
+      "calc_ms": 0.12,
+      "text": "Found first 13 Mersenne primes in 0.12ms."
+    },
+    {
+      "n": 14,
+      "rtt_ms": 4.03706100769341,
+      "calc_ms": 1.25,
+      "text": "Found first 14 Mersenne primes in 1.25ms."
+    },
+    {
+      "n": 15,
+      "rtt_ms": 4.898365004919469,
+      "calc_ms": 2.62,
+      "text": "Found first 15 Mersenne primes in 2.62ms."
+    },
+    {
+      "n": 16,
+      "rtt_ms": 5.341205978766084,
+      "calc_ms": 4.23,
+      "text": "Found first 16 Mersenne primes in 4.23ms."
+    },
+    {
+      "n": 17,
+      "rtt_ms": 5.050744046457112,
+      "calc_ms": 4.07,
+      "text": "Found first 17 Mersenne primes in 4.07ms."
+    },
+    {
+      "n": 18,
+      "rtt_ms": 15.690114931203425,
+      "calc_ms": 14.64,
+      "text": "Found first 18 Mersenne primes in 14.64ms."
+    },
+    {
+      "n": 19,
+      "rtt_ms": 25.448094005696476,
+      "calc_ms": 24.59,
+      "text": "Found first 19 Mersenne primes in 24.59ms."
+    },
+    {
+      "n": 20,
+      "rtt_ms": 34.588914015330374,
+      "calc_ms": 33.61,
+      "text": "Found first 20 Mersenne primes in 33.61ms."
+    },
+    {
+      "n": 21,
+      "rtt_ms": 121.46599299740046,
+      "calc_ms": 120.24,
+      "text": "Found first 21 Mersenne primes in 120.24ms."
+    },
+    {
+      "n": 22,
+      "rtt_ms": 197.1445600502193,
+      "calc_ms": 195.96,
+      "text": "Found first 22 Mersenne primes in 195.96ms."
+    }
+  ],
+  "Go": [
+    {
+      "n": 1,
+      "rtt_ms": 2308.63393493928,
+      "calc_ms": 0.019244,
+      "text": "The first 1 Mersenne prime has been calculated. The elapsed time is 19.244\u00b5s."
+    },
+    {
+      "n": 2,
+      "rtt_ms": 1264.6858440712094,
+      "calc_ms": 0.048368,
+      "text": "The first 2 Mersenne primes were calculated."
+    },
+    {
+      "n": 3,
+      "rtt_ms": 1164.0381899196655,
+      "calc_ms": 0.006669,
+      "text": "The first 3 Mersenne primes have been generated. It took 6.669 microseconds."
+    },
+    {
+      "n": 4,
+      "rtt_ms": 1118.934097001329,
+      "calc_ms": 0.019129,
+      "text": "I have calculated the first 4 Mersenne primes. The elapsed time was 19.129 microseconds."
+    },
+    {
+      "n": 5,
+      "rtt_ms": 1558.444694033824,
+      "calc_ms": 0.010407999999999999,
+      "text": "The first 5 Mersenne primes were calculated in 10.408 microseconds."
+    },
+    {
+      "n": 6,
+      "rtt_ms": 1256.8869149545208,
+      "calc_ms": 0.035408,
+      "text": "The first 6 Mersenne primes have been generated in 35.408 microseconds."
+    },
+    {
+      "n": 7,
+      "rtt_ms": 2677.359055960551,
+      "calc_ms": 0.010451,
+      "text": "I have generated the first 7 Mersenne primes. The elapsed time was 10.451 microseconds."
+    },
+    {
+      "n": 8,
+      "rtt_ms": 1257.3473840020597,
+      "calc_ms": 0.01286,
+      "text": "The first 8 Mersenne primes were calculated. The execution took 12.86 microseconds."
+    },
+    {
+      "n": 9,
+      "rtt_ms": 1309.3828449491411,
+      "calc_ms": 0.028655,
+      "text": "The first 9 Mersenne primes have been generated in 28.655 microseconds.\n"
+    },
+    {
+      "n": 10,
+      "rtt_ms": 1295.2139369444922,
+      "calc_ms": 0.032934,
+      "text": "The first 10 Mersenne primes have been calculated. The execution time was 32.934 microseconds."
+    },
+    {
+      "n": 11,
+      "rtt_ms": 1456.2582890503109,
+      "calc_ms": 0.037501,
+      "text": "The first 11 Mersenne primes have been generated. The elapsed time was 37.501 microseconds."
+    },
+    {
+      "n": 12,
+      "rtt_ms": 1718.7384529970586,
+      "calc_ms": 0.952857,
+      "text": "I have calculated the first 12 Mersenne primes. The operation took 952.857 microseconds."
+    },
+    {
+      "n": 13,
+      "rtt_ms": 1564.138233079575,
+      "calc_ms": 0.295859,
+      "text": "The first 13 Mersenne primes have been calculated. The operation took 295.859 microseconds."
+    },
+    {
+      "n": 14,
+      "rtt_ms": 1615.2070409152657,
+      "calc_ms": 0.982743,
+      "text": "The first 14 Mersenne primes were generated in 982.743 microseconds."
+    },
+    {
+      "n": 15,
+      "rtt_ms": 1679.6873449347913,
+      "calc_ms": 2.568542,
+      "text": "The first 15 Mersenne primes were calculated in 2.568542ms."
+    },
+    {
+      "n": 16,
+      "rtt_ms": 2669.0720740007237,
+      "calc_ms": 3.168943,
+      "text": "I have calculated the first 16 Mersenne primes. The calculation took 3.168943ms."
+    },
+    {
+      "n": 17,
+      "rtt_ms": 1367.30250203982,
+      "calc_ms": 9.184934,
+      "text": "The first 17 Mersenne primes have been generated. It took 9.184934ms."
+    },
+    {
+      "n": 18,
+      "rtt_ms": 1362.6876519992948,
+      "calc_ms": 16.246009,
+      "text": "Generating the first 18 Mersenne primes took 16.246009ms."
+    },
+    {
+      "n": 19,
+      "rtt_ms": 1881.5055419690907,
+      "calc_ms": 21.351626,
+      "text": "The first 19 Mersenne primes were calculated in 21.351626ms."
+    },
+    {
+      "n": 20,
+      "rtt_ms": 1290.0463900296018,
+      "calc_ms": 46.912239,
+      "text": "The first 20 Mersenne primes were calculated in 46.912239ms."
+    },
+    {
+      "n": 21,
+      "rtt_ms": 1628.5741550382227,
+      "calc_ms": 223.362,
+      "text": "The first 21 Mersenne primes were calculated in 223.362ms."
+    },
+    {
+      "n": 22,
+      "rtt_ms": 1641.9442690676078,
+      "calc_ms": 279.538655,
+      "text": "It took 279.538655ms to calculate the first 22 Mersenne primes."
+    }
+  ],
+  "Python": [
+    {
+      "n": 1,
+      "rtt_ms": 3168.111552949995,
+      "calc_ms": 0.01239776611328125,
+      "text": "I have calculated the first 1 Mersenne prime. The calculation took 1.239776611328125e-05 seconds.\n"
+    },
+    {
+      "n": 2,
+      "rtt_ms": 2375.5771400174126,
+      "calc_ms": 0.0057220458984375,
+      "text": "The first 2 Mersenne primes are 3 and 7. The calculation took 5.7220458984375e-06 seconds."
+    },
+    {
+      "n": 3,
+      "rtt_ms": 2618.179912911728,
+      "calc_ms": 0.0050067901611328125,
+      "text": "The first 3 Mersenne primes have been calculated."
+    },
+    {
+      "n": 4,
+      "rtt_ms": 2325.1519449986517,
+      "calc_ms": 0.019073486328125,
+      "text": "The first 4 Mersenne primes have been calculated. The calculation took 0.000019 seconds."
+    },
+    {
+      "n": 5,
+      "rtt_ms": 2417.120002093725,
+      "calc_ms": 0.011444091796875,
+      "text": "I have calculated the first 5 Mersenne primes. This operation took 1.1444091796875e-05 seconds."
+    },
+    {
+      "n": 6,
+      "rtt_ms": 2814.7315869573504,
+      "calc_ms": 0.03695487976074219,
+      "text": "The first 6 Mersenne primes have been calculated. The operation took 0.00003695 seconds."
+    },
+    {
+      "n": 7,
+      "rtt_ms": 2626.119374996051,
+      "calc_ms": 0.031948,
+      "text": "It took 0.000031948 seconds to find the first 7 Mersenne primes."
+    },
+    {
+      "n": 8,
+      "rtt_ms": 2692.1310659963638,
+      "calc_ms": 0.020742416381835938,
+      "text": "I found the first 8 Mersenne primes. The calculation took 2.0742416381835938e-05 seconds."
+    },
+    {
+      "n": 9,
+      "rtt_ms": 2760.2055959869176,
+      "calc_ms": 0.10514259338378906,
+      "text": "I have calculated the first 9 Mersenne primes. The calculation took 0.00010514259338378906 seconds."
+    },
+    {
+      "n": 10,
+      "rtt_ms": 3396.7859820695594,
+      "calc_ms": 0.07796287536621094,
+      "text": "The calculation has been completed. The first 10 Mersenne primes were found in 7.7962875366210938e-05 seconds."
+    },
+    {
+      "n": 11,
+      "rtt_ms": 2733.449778985232,
+      "calc_ms": 0.2281665802001953,
+      "text": "I found the first 11 Mersenne primes in 0.00022816658020019531 seconds.\n"
+    },
+    {
+      "n": 12,
+      "rtt_ms": 2630.1845510024577,
+      "calc_ms": 0.1049041748046875,
+      "text": "It took 0.0001049041748046875 seconds to find the first 12 Mersenne primes."
+    },
+    {
+      "n": 13,
+      "rtt_ms": 2738.3675759192556,
+      "calc_ms": 0.8075237274169922,
+      "text": "I found the first 13 Mersenne primes. The calculation took 0.0008075237274169922 seconds."
+    },
+    {
+      "n": 14,
+      "rtt_ms": 2583.26724905055,
+      "calc_ms": 0.568389892578125,
+      "text": "I found the first 14 Mersenne primes in 0.000568389892578125 seconds.\n"
+    },
+    {
+      "n": 15,
+      "rtt_ms": 3089.5021839533,
+      "calc_ms": 5.395412445068359,
+      "text": "It took 0.0053954124450683594 seconds to find the first 15 Mersenne primes.\n"
+    },
+    {
+      "n": 16,
+      "rtt_ms": 2865.174054983072,
+      "calc_ms": 7.8144073486328125,
+      "text": "Calculating the first 16 Mersenne primes took 0.0078144073486328125 seconds.\n"
+    },
+    {
+      "n": 17,
+      "rtt_ms": 2735.3880769805983,
+      "calc_ms": 13.136863708496094,
+      "text": "The first 17 Mersenne primes were calculated in 0.0131 seconds."
+    },
+    {
+      "n": 18,
+      "rtt_ms": 2634.850890026428,
+      "calc_ms": 50.19569396972656,
+      "text": "I have calculated the first 18 Mersenne primes. This operation took 0.05 seconds.\n"
+    },
+    {
+      "n": 19,
+      "rtt_ms": 2774.1646339418367,
+      "calc_ms": 52.77442932128906,
+      "text": "The calculation is complete. The elapsed time was 0.052774429321289062 seconds."
+    },
+    {
+      "n": 20,
+      "rtt_ms": 3208.568466012366,
+      "calc_ms": 84.15031433105469,
+      "text": "Finding the first 20 Mersenne primes took 0.08415031433105469 seconds.\n"
+    },
+    {
+      "n": 21,
+      "rtt_ms": 2940.0155789917335,
+      "calc_ms": 330.89685440063477,
+      "text": "The first 21 Mersenne primes have been calculated."
+    },
+    {
+      "n": 22,
+      "rtt_ms": 3043.5874729882926,
+      "calc_ms": 572.4761486053467,
+      "text": "It took 0.5724761486053467 seconds to find the first 22 Mersenne primes.\n"
+    }
+  ]
+}

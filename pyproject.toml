@@ -1,5 +1,5 @@
 [project]
-name = "a2a-hello-world"
+name = "a2a-benchmark"
 version = "0.1.0"
 dependencies = [
     "google-adk",

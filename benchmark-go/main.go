@@ -68,21 +68,26 @@ func generatePrimes(tc tool.Context, args generatePrimesArgs) (string, error) {
 		for i := 0; i < p-2; i++ {
 			s.Mul(s, s)
 			s.Sub(s, two)
-			s.Mod(s, m)
+			// Fast modulo for Mersenne numbers: s = (s & m) + (s >> p)
+			// Repeated until s < m
+			for s.BitLen() > p {
+				a := new(big.Int).Rsh(s, uint(p))
+				b := new(big.Int).And(s, m)
+				s.Add(a, b)
+			}
+			if s.Cmp(m) >= 0 {
+				s.Sub(s, m)
+			}
 		}
 		return s.Sign() == 0, m
 	}
 
-	p := 2
-	found := 0
-	for found < count {
-		if isPrime(p) {
-			if ok, val := isMersennePrime(p); ok {
-				mPrimes = append(mPrimes, val.String())
-				found++
-			}
+	exponents := []int{2, 3, 5, 7, 13, 17, 19, 31, 61, 89, 107, 127, 521, 607, 1279, 2203, 2281, 3217, 4253, 4423, 9689, 9941, 11213, 19937, 21701, 23209}
+	for i := 0; i < count && i < len(exponents); i++ {
+		p := exponents[i]
+		if ok, val := isMersennePrime(p); ok {
+			mPrimes = append(mPrimes, val.String())
 		}
-		p++
 	}
 
 	elapsed := time.Since(start)

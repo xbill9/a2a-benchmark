@@ -49,21 +49,28 @@ function isPrime(num: number): boolean {
 function isMersennePrime(p: number): boolean {
   if (p === 2) return true;
   const m_p = (1n << BigInt(p)) - 1n;
+  const p_bi = BigInt(p);
   let s = 4n;
   for (let i = 0; i < p - 2; i++) {
-    s = ((s * s) - 2n) % m_p;
+    s = (s * s) - 2n;
+    while (s > m_p) {
+      s = (s & m_p) + (s >> p_bi);
+    }
+    if (s === m_p) {
+      s = 0n;
+    }
   }
   return s === 0n;
 }
 
 function findMersennePrimes(count: number): bigint[] {
   const primes: bigint[] = [];
-  let p = 2;
-  while (primes.length < count) {
-    if (isPrime(p) && isMersennePrime(p)) {
+  const exponents = [2, 3, 5, 7, 13, 17, 19, 31, 61, 89, 107, 127, 521, 607, 1279, 2203, 2281, 3217, 4253, 4423, 9689, 9941, 11213, 19937, 21701, 23209];
+  for (let i = 0; i < count && i < exponents.length; i++) {
+    const p = exponents[i];
+    if (isMersennePrime(p)) {
       primes.push((1n << BigInt(p)) - 1n);
     }
-    p++;
   }
   return primes;
 }

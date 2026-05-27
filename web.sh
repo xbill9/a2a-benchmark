@@ -1,6 +1,6 @@
-source $HOME/a2a-hello-world/set_env.sh
+source $HOME/a2a-benchmark/set_env.sh
 
-cd src/agents
+cd benchmark-python/agents
 
 echo `pwd`
 echo adk web

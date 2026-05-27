@@ -1,53 +1,98 @@
-# A2A Hello World
+# A2A Multi-Language Performance Benchmark
 
-## Project Overview
-This project serves as a foundational "Hello World" example for developing agents using the Google Agent Development Kit (ADK) and the Agent-to-Agent (A2A) protocol. It demonstrates how to build a simple Python-based agent capable of interacting with external tools (like fetching weather and time information) and provides a comprehensive set of scripts for local development, testing, and deployment to Google Cloud Run. The primary goal is to offer a clear, runnable template for developers to quickly get started with ADK and A2A agent development, showcasing the power of inter-agent communication.
+This project serves as a performance benchmarking suite to measure and compare Agent-to-Agent (A2A) protocol communication and tool execution performance across multiple programming languages: **Python**, **Go**, **Node.js (TypeScript)**, and **Rust**.
 
-## Setup Scripts
+The benchmark runs an agent in each language that implements a tool to calculate the first $N$ Mersenne primes using the Lucas-Lehmer primality test. A central **Master Coordinator Agent** orchestrates runs from $N = 1$ to $N = 20$ (or higher) across the language agents to measure performance and capture execution time.
 
-*   `init.sh`: Initializes the environment by prompting the user for their Google Cloud project ID and Gemini API Key. It also runs `gcloud auth application-default login` to get user credentials.
-*   `set_env.sh`: Sets various environment variables required for the other scripts to run. It reads the project ID and Gemini key from the files created by `init.sh`. This script also sets the `PUBLIC_URL` environment variable, which is used to configure the public URL for the agent.
+## Project Architecture
 
-## ADK Execution Scripts
+The suite consists of the following components:
 
-These scripts facilitate running the agent in various modes and environments:
+- **Master Coordinator Agent (Python)**: Orchestrates benchmarks by calling sub-agents via the A2A protocol and measuring execution times. Exposes a FastMCP interface on port `8100`.
+- **Python Benchmark Agent**: Calculates Mersenne primes using the Lucas-Lehmer test, exposed as an A2A app on port `8101`.
+- **Go Benchmark Agent**: Calculates Mersenne primes, built with the Go implementation of ADK, running on port `8102`.
+- **Node.js Benchmark Agent**: Written in TypeScript using `@a2a-js/sdk`, running on port `8103`.
+- **Rust Benchmark Agent**: Written in Rust using the `axum` web framework and `num_bigint` crate, running on port `8104`.
 
-*   `cli.sh` / `run.sh`: Runs the agent in command-line mode, allowing you to interact with it from your terminal. `run.sh` is an alias for `cli.sh`.
-*   `local.sh`: Runs the agent in a local web server, accessible typically at `http://localhost:8080`.
-*   `web.sh`: Runs the agent in a local web server and automatically opens the UI in your default web browser.
-*   `api_server.sh`: Runs the agent in API server mode, exposing its functionalities via a RESTful API.
-*   `cloudrun.sh`: Deploys the agent as a scalable service to Google Cloud Run, making it accessible publicly.
+### Port Mappings
 
-## Agent-Specific Execution Scripts
+| Component / Agent | Language | Port | Type |
+|---|---|---|---|
+| Master Coordinator | Python | `8100` | FastMCP Server / Coordinator |
+| Python Agent | Python | `8101` | A2A Endpoint |
+| Go Agent | Go | `8102` | A2A Endpoint |
+| Node.js Agent | TypeScript | `8103` | A2A / Express Endpoint |
+| Rust Agent | Rust | `8104` | A2A / Axum JSON-RPC Endpoint |
 
-These scripts are tailored for specific agents within the project, demonstrating various A2A interactions and functionalities:
+---
 
-*   `a2acard.sh`: Runs the `a2a-agentcard` agent, which handles agent card-related interactions.
-*   `a2aevents.sh`: Executes the `a2a-events` agent, designed for finding events with Google Search Tool.
-*   `a2ahello.sh`: Runs the `a2a-hello-world` agent, a basic example of A2A communication.
-*   `a2amaster.sh`: Starts the `a2a-master-agent`, which orchestrates interactions between other agents.
-*   `a2atest.sh`: A utility script for testing A2A agent functionalities.
-*   `a2aweather.sh`: Runs the `a2a-weather-time` agent, demonstrating tool usage for weather and time information.
+## Getting Started
 
-## Agent Details
+### 1. Initialization
+Run the initialization script to set up your Google Cloud Project ID and Gemini API Key:
+```bash
+./init.sh
+```
 
-The core agent logic is defined in `src/agents/a2a_hello_world/agent.py`. This simple agent demonstrates:
+### 2. Sourcing Environment
+Source the environment variables required for running the benchmarks:
+```bash
+source set_env.sh
+```
 
-*   **Tool Usage:** It utilizes two predefined tools: `get_weather` to retrieve current weather conditions for a specified city, and `get_current_time` to obtain the current time for a given location.
-*   **Model Integration:** The agent is configured to use the `gemini-2.5-flash` model for its conversational capabilities and tool orchestration.
-*   **Direct Execution:** The `agent.py` script can be run directly to start a `uvicorn` server, which is useful for local development and testing.
+---
 
-## A2A Protocol Integration
+## Running the Agents
 
-This project highlights the integration of the Agent-to-Agent (A2A) protocol, enabling seamless communication between different agents. The agent-specific scripts (e.g., `a2ahello.sh`, `a2aweather.sh`) are designed to run agents in A2A mode, allowing them to send and receive messages from other agents. This setup is crucial for building complex multi-agent systems where specialized agents collaborate to achieve a larger goal. The `a2a-hello-world` agent, while simple, provides a clear example of how to expose an agent's capabilities for inter-agent communication using the ADK framework.
+You can run each agent individually in separate terminals:
 
-## Development
+### Python Benchmark Agent
+Runs the target Python prime calculation agent:
+```bash
+./bench-python.sh
+```
 
-To extend or modify this agent:
+### Go Benchmark Agent
+Runs the Go benchmark agent:
+```bash
+./bench-go.sh
+```
 
-1.  **Locate Agent Code:** The main agent implementation is in `src/agents/a2a_hello_world/agent.py`.
-2.  **Add Tools:** Define new tools within the agent's `tools` list, similar to `get_weather` and `get_current_time`.
-3.  **Modify Agent Logic:** Adjust the agent's prompt or add new functionalities within the `agent.py` file.
-4.  **Dependencies:** If new Python packages are required, add them to `src/agents/a2a_hello_world/requirements.txt`. For development dependencies, add them to the root `requirements.txt`.
-5.  **Testing:** Utilize the `cli.sh` or `local.sh` scripts for quick local testing during development.
-# a2a-benchmark
+### Node.js Benchmark Agent
+Runs the Node.js/TypeScript benchmark agent:
+```bash
+./bench-node.sh
+```
+
+### Rust Benchmark Agent
+Runs the Rust benchmark agent:
+```bash
+./bench-rust.sh
+```
+
+### Master Coordinator Agent
+Runs the coordinator master agent that delegates tasks and benchmarks the other agents:
+```bash
+./bench-master.sh
+```
+
+---
+
+## Verification & Testing
+
+To quickly verify that the Rust agent is functional and responding to A2A requests:
+```bash
+./test-rust.sh
+```
+
+---
+
+## Results Visualization
+
+The benchmark results can be plotted using:
+```bash
+python plot_primes.py
+```
+This generates `prime_calculation_times.png`. Existing benchmarking comparison plots are saved as:
+- `benchmark_performance.png` (General comparison)
+- `benchmark_performance_15-20.png` (Comparison for larger counts)

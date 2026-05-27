@@ -44,6 +44,15 @@ python_agent = RemoteA2aAgent(
     ),
 )
 
+
+rust_agent = RemoteA2aAgent(
+    name="rust_agent",
+    description="Mersenne prime number Agent written in Rust",
+    agent_card=(
+        f"http://127.0.0.1:8104/{AGENT_CARD_WELL_KNOWN_PATH}"
+    ),
+)
+
 root_agent = LlmAgent(
     name="master_agent",
     model=os.getenv("MODEL_NAME", "gemini-2.5-flash"),
@@ -54,6 +63,7 @@ root_agent = LlmAgent(
         if the user asks to benchmark node call the node_agent
         if the user asks to benchmark go call the go_agent
         if the user asks to benchmark python call the python_agent
+        if the user asks to benchmark rust call the rust_agent
         for each benchmark run it 20 times - the first time for the list
         of the first mersenne prime
         the second time for the list of the first 2 mersenne primes,
@@ -61,7 +71,7 @@ root_agent = LlmAgent(
         after each iteration print the elapsed time
 
     """,
-    sub_agents=[python_agent,go_agent,node_agent]
+    sub_agents=[python_agent, go_agent, node_agent, rust_agent]
 )
 
 print(f"Master Agent is using model: {root_agent.model}")

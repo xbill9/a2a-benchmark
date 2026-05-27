@@ -1,0 +1,253 @@
+import urllib.request
+import json
+import time
+import re
+import os
+
+# Define agent endpoints
+AGENTS = {
+    "Node.js": {
+        "url": "http://localhost:8103/",
+        "parse_fn": lambda text, r_json: parse_node_rust_time(text)
+    },
+    "Rust": {
+        "url": "http://localhost:8104/",
+        "parse_fn": lambda text, r_json: parse_node_rust_time(text)
+    },
+    "Go": {
+        "url": "http://localhost:8102/a2a/invoke",
+        "parse_fn": lambda text, r_json: parse_go_time(r_json)
+    },
+    "Python": {
+        "url": "http://localhost:8101/",
+        "parse_fn": lambda text, r_json: parse_python_time(text, r_json)
+    }
+}
+
+def parse_node_rust_time(text):
+    m = re.search(r"in ([\d\.]+)ms", text)
+    if m:
+        return float(m.group(1))
+    return None
+
+def parse_go_time(r_json):
+    try:
+        artifacts = r_json.get("result", {}).get("artifacts", [])
+        for art in artifacts:
+            for part in art.get("parts", []):
+                data = part.get("data", {})
+                if data.get("name") == "generate_primes":
+                    resp = data.get("response", {})
+                    result_str = resp.get("result", "")
+                    if "Elapsed time:" in result_str:
+                        time_str = result_str.replace("Elapsed time:", "").strip()
+                        if time_str.endswith("µs"):
+                            return float(time_str[:-2]) / 1000.0
+                        elif time_str.endswith("ms"):
+                            return float(time_str[:-2])
+                        elif time_str.endswith("s"):
+                            return float(time_str[:-1]) * 1000.0
+                        else:
+                            return float(time_str)
+    except Exception as e:
+        print(f"Error parsing Go time: {e}")
+    return None
+
+def parse_python_time(text, r_json):
+    m = re.search(r"It took ([\d\.\-e]+) seconds", text)
+    if m:
+        return float(m.group(1)) * 1000.0
+    m = re.search(r"in ([\d\.]+)ms", text)
+    if m:
+        return float(m.group(1))
+        
+    try:
+        def find_elapsed(obj):
+            if isinstance(obj, dict):
+                if "elapsed_time" in obj:
+                    return obj["elapsed_time"]
+                for k, v in obj.items():
+                    res = find_elapsed(v)
+                    if res is not None:
+                        return res
+            elif isinstance(obj, list):
+                for item in obj:
+                    res = find_elapsed(item)
+                    if res is not None:
+                        return res
+            return None
+        elapsed = find_elapsed(r_json)
+        if elapsed is not None:
+            return float(elapsed) * 1000.0
+    except Exception:
+        pass
+    return None
+
+def run_agent_call(url, n, timeout=300):
+    req_body = {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "message/send",
+        "params": {
+            "message": {
+                "kind": "message",
+                "messageId": f"bench-req-{n}-{int(time.time())}",
+                "role": "user",
+                "parts": [
+                    {
+                        "kind": "text",
+                        "text": f"Calculate the first {n} Mersenne primes"
+                    }
+                ],
+                "contextId": f"bench-context-{n}"
+            }
+        }
+    }
+    
+    data_bytes = json.dumps(req_body).encode("utf-8")
+    req = urllib.request.Request(
+        url,
+        data=data_bytes,
+        headers={"Content-Type": "application/json"},
+        method="POST"
+    )
+    
+    start_time = time.perf_counter()
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as response:
+            resp_bytes = response.read()
+            end_time = time.perf_counter()
+            r_json = json.loads(resp_bytes.decode("utf-8"))
+            rtt = (end_time - start_time) * 1000.0
+            return r_json, rtt
+    except Exception as e:
+        print(f" HTTP request error: {e}")
+        return None, None
+
+def get_text_response(r_json):
+    try:
+        result = r_json.get("result", {})
+        parts = result.get("parts", [])
+        if parts:
+            return parts[0].get("text", "")
+        artifacts = result.get("artifacts", [])
+        for art in artifacts:
+            for part in art.get("parts", []):
+                if part.get("kind") == "text":
+                    return part.get("text", "")
+    except Exception:
+        pass
+    return ""
+
+def main():
+    print("==================================================")
+    print("Starting A2A Mersenne Prime Benchmark (1 to 22)")
+    print("==================================================")
+    
+    results = {}
+    for lang in AGENTS.keys():
+        results[lang] = []
+            
+    # Run 1 to 22 from scratch
+    for n in range(1, 23):
+        print(f"\n--- Calculating first {n} Mersenne Primes ---")
+        for lang, config in AGENTS.items():
+            print(f"Calling {lang:7} agent...", end="", flush=True)
+            r_json, rtt = run_agent_call(config["url"], n, timeout=120)
+            
+            if r_json is None:
+                print(" Failed (No Response / Timeout)")
+                results[lang].append({
+                    "n": n,
+                    "rtt_ms": None,
+                    "calc_ms": None,
+                    "text": ""
+                })
+                continue
+                
+            text = get_text_response(r_json)
+            calc_ms = config["parse_fn"](text, r_json)
+            
+            print(f" Done! Calc: {f'{calc_ms:.4f}ms' if calc_ms is not None else 'N/A'}, RTT: {rtt:.2f}ms")
+            
+            results[lang].append({
+                "n": n,
+                "rtt_ms": rtt,
+                "calc_ms": calc_ms,
+                "text": text
+            })
+            
+            with open("benchmark_results_1_22.json", "w") as f:
+                json.dump(results, f, indent=2)
+                
+            time.sleep(0.1)
+
+    # Save final results
+    with open("benchmark_results_1_22.json", "w") as f:
+        json.dump(results, f, indent=2)
+    print("\nResults saved to benchmark_results_1_22.json")
+
+    # Generate Markdown Table for Calculation Times
+    print("\n### Calculation Times (ms)")
+    print("| N | Node.js (TS) | Rust | Go | Python |")
+    print("|---|---|---|---|---|")
+    for idx in range(22):
+        n = idx + 1
+        node_val = results["Node.js"][idx]["calc_ms"]
+        rust_val = results["Rust"][idx]["calc_ms"]
+        go_val = results["Go"][idx]["calc_ms"]
+        py_val = results["Python"][idx]["calc_ms"]
+        
+        node_str = f"{node_val:.4f} ms" if node_val is not None else "N/A"
+        rust_str = f"{rust_val:.4f} ms" if rust_val is not None else "N/A"
+        go_str = f"{go_val:.4f} ms" if go_val is not None else "N/A"
+        py_str = f"{py_val:.4f} ms" if py_val is not None else "N/A"
+        
+        print(f"| {n} | {node_str} | {rust_str} | {go_str} | {py_str} |")
+
+    # Try plotting
+    try:
+        import matplotlib.pyplot as plt
+        
+        plt.figure(figsize=(12, 7))
+        colors = {"Node.js": "#0288d1", "Rust": "#d84315", "Go": "#00796b", "Python": "#fbc02d"}
+        
+        for lang in AGENTS.keys():
+            x = [r["n"] for r in results[lang] if r["calc_ms"] is not None]
+            y = [r["calc_ms"] for r in results[lang] if r["calc_ms"] is not None]
+            if x and y:
+                plt.plot(x, y, 'o-', color=colors[lang], label=f"{lang} (Calc Time)", linewidth=2)
+                
+        plt.xlabel('Number of Mersenne Primes (N)', fontsize=12)
+        plt.ylabel('Time (ms)', fontsize=12)
+        plt.title('Mersenne Prime Calculation Time Comparison (Log Scale)', fontsize=14, fontweight='bold')
+        plt.yscale('log')
+        plt.grid(True, which="both", ls="--", alpha=0.5)
+        plt.xticks(range(1, 23))
+        plt.legend(fontsize=11)
+        plt.tight_layout()
+        plt.savefig('prime_calculation_times_1_22.png', dpi=300)
+        print("Calculation times plot saved to prime_calculation_times_1_22.png")
+        
+        plt.figure(figsize=(12, 7))
+        for lang in AGENTS.keys():
+            x = [r["n"] for r in results[lang] if r["rtt_ms"] is not None]
+            y = [r["rtt_ms"] / 1000.0 for r in results[lang] if r["rtt_ms"] is not None]
+            if x and y:
+                plt.plot(x, y, 's-', color=colors[lang], label=f"{lang} (A2A Latency)", linewidth=2)
+                
+        plt.xlabel('Number of Mersenne Primes (N)', fontsize=12)
+        plt.ylabel('Total Round-Trip Time (seconds)', fontsize=12)
+        plt.title('A2A Agent Round-Trip Time Comparison (including LLM/Tool calling)', fontsize=14, fontweight='bold')
+        plt.grid(True, which="both", ls="--", alpha=0.5)
+        plt.xticks(range(1, 23))
+        plt.legend(fontsize=11)
+        plt.tight_layout()
+        plt.savefig('a2a_latency_times_1_22.png', dpi=300)
+        print("A2A latency times plot saved to a2a_latency_times_1_22.png")
+        
+    except Exception as e:
+        print(f"Skipping plot generation: {e}")
+
+if __name__ == "__main__":
+    main()

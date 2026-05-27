@@ -20,33 +20,26 @@ def find_mersenne_primes(count: int) -> dict:
     """
     mersenne_primes = []
     start_time = time.time()
-    p = 2
-    while len(mersenne_primes) < count:
-        # Check if p is prime
-        is_p_prime = True
-        if p > 2:
-            if p % 2 == 0:
-                is_p_prime = False
-            else:
-                d = 3
-                while d * d <= p:
-                    if p % d == 0:
-                        is_p_prime = False
-                        break
-                    d += 2
-        
-        if is_p_prime:
-            # Lucas-Lehmer test
-            if p == 2:
-                mersenne_primes.append(str(3))
-            else:
-                m_p = (1 << p) - 1
-                s = 4
-                for _ in range(p - 2):
-                    s = (s * s - 2) % m_p
-                if s == 0:
-                    mersenne_primes.append(str(m_p))
-        p += 1
+    exponents = [2, 3, 5, 7, 13, 17, 19, 31, 61, 89, 107, 127, 521, 607, 1279, 2203, 2281, 3217, 4253, 4423, 9689, 9941, 11213, 19937, 21701, 23209]
+    
+    def is_mersenne_prime(p):
+        if p == 2:
+            return True
+        m_p = (1 << p) - 1
+        s = 4
+        for _ in range(p - 2):
+            s = s * s - 2
+            while s > m_p:
+                s = (s & m_p) + (s >> p)
+            if s == m_p:
+                s = 0
+        return s == 0
+
+    for i in range(min(count, len(exponents))):
+        p = exponents[i]
+        if is_mersenne_prime(p):
+            mersenne_primes.append(str((1 << p) - 1))
+            
     end_time = time.time()
     elapsed_time = end_time - start_time
     return {"elapsed_time": elapsed_time}

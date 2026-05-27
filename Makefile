@@ -56,6 +56,12 @@ docs:
 
 .PHONY: clean
 clean:
-	@echo "Cleaning up..."
-	@find src -type f -name "*.pyc" -delete
-	@find src -type d -name "__pycache__" -exec rm -rf {} +
+	@echo "Cleaning sub-projects..."
+	@$(MAKE) -C benchmark-go clean
+	@$(MAKE) -C benchmark-node clean
+	@$(MAKE) -C benchmark-rust clean
+	@echo "Cleaning up root files..."
+	@rm -f *.log
+	@find . -type f -name "*.pyc" -delete
+	@find . -type d -name "__pycache__" -exec rm -rf {} +
+

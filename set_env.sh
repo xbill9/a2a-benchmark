@@ -94,12 +94,11 @@ export REGION="$GOOGLE_CLOUD_LOCATION"
 echo "Exported REGION=$GOOGLE_CLOUD_LOCATION"
 
 # Set a name for your Cloud Run service (optional)
-export SERVICE_NAME="hello-world-a2a-service"
+export SERVICE_NAME="a2a-benchmark-service"
 
-# Set an application name (optional)
-export APP_NAME="hello-world-a2a-app"
+export APP_NAME="a2a-benchmark-app"
 
-export AGENT_PATH="$HOME/a2a-hello-world/src/agents/a2a_hello_world"
+export AGENT_PATH="$HOME/a2a-benchmark/benchmark-python/agents/bench_master"
 
 
 
