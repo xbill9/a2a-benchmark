@@ -41,7 +41,12 @@ def parse_go_time(r_json):
                     result_str = resp.get("result", "")
                     if "Elapsed time:" in result_str:
                         time_str = result_str.replace("Elapsed time:", "").strip()
-                        if time_str.endswith("µs"):
+                        # Go's time.Duration formats sub-microsecond values
+                        # with an "ns" suffix (e.g. "836ns"); check it before
+                        # the broader suffixes below ("s" is a suffix of all).
+                        if time_str.endswith("ns"):
+                            return float(time_str[:-2]) / 1_000_000.0
+                        elif time_str.endswith("µs"):
                             return float(time_str[:-2]) / 1000.0
                         elif time_str.endswith("ms"):
                             return float(time_str[:-2])
