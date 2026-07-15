@@ -121,7 +121,9 @@ class PrimeExecutor implements AgentExecutor {
           kind: "text", 
           // 4 decimals: at 2 decimals sub-10µs runs reported "0.00ms", which
           // parses to 0.0 and cannot be plotted on the log-scale chart.
-          text: `Found first ${count} Mersenne primes in ${elapsed.toFixed(4)}ms.`
+          // primes.length, not count: the exponent table caps at 26 entries,
+          // so a request for more must not claim it was fulfilled.
+          text: `Found first ${primes.length} Mersenne primes in ${elapsed.toFixed(4)}ms.`
         }
       ],
       // Associate the response with the incoming request's context.
