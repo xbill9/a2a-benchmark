@@ -213,8 +213,8 @@ async fn handle_rpc(Json(req): Json<JsonRpcRequest>) -> Json<serde_json::Value> 
     }
 
     println!("Starting search for first {} Mersenne primes...", count);
-    let (_primes, elapsed) = find_mersenne_primes(count);
-    println!("Found {} primes in {:.4}ms", count, elapsed);
+    let (primes, elapsed) = find_mersenne_primes(count);
+    println!("Found {} primes in {:.4}ms", primes.len(), elapsed);
 
     let response_message = Message {
         kind: "message".to_string(),
@@ -223,7 +223,9 @@ async fn handle_rpc(Json(req): Json<JsonRpcRequest>) -> Json<serde_json::Value> 
         parts: vec![Part::Text {
             // 4 decimals: at 2 decimals sub-10µs runs reported "0.00ms", which
             // parses to 0.0 and cannot be plotted on the log-scale chart.
-            text: format!("Found first {} Mersenne primes in {:.4}ms.", count, elapsed),
+            // primes.len(), not count: the exponent table caps at 26 entries,
+            // so a request for more must not claim it was fulfilled.
+            text: format!("Found first {} Mersenne primes in {:.4}ms.", primes.len(), elapsed),
         }],
         context_id: params.message.context_id,
     };
