@@ -92,6 +92,13 @@ def parse_python_time(text, r_json):
         return float(m.group(1))
     return None
 
+# Unique per benchmark run: LLM-brokered agents (ADK) keep per-context session
+# history in memory, so a fixed contextId makes reruns land in an old session
+# and the model may answer from history ("I already did that") without calling
+# the tool - silently dropping the datapoint.
+RUN_ID = int(time.time())
+
+
 def run_agent_call(url, n, timeout=300):
     req_body = {
         "jsonrpc": "2.0",
@@ -108,7 +115,7 @@ def run_agent_call(url, n, timeout=300):
                         "text": f"Calculate the first {n} Mersenne primes"
                     }
                 ],
-                "contextId": f"bench-context-{n}"
+                "contextId": f"bench-context-{RUN_ID}-{n}"
             }
         }
     }
