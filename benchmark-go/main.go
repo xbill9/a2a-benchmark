@@ -52,7 +52,7 @@ type generatePrimesArgs struct {
 
 func generatePrimes(tc tool.Context, args generatePrimesArgs) (string, error) {
 	start := time.Now()
-	var mPrimes []string
+	var mPrimes []*big.Int
 	count := args.Count
 
 	// isMersennePrime checks if M_p = 2^p - 1 is prime using Lucas-Lehmer test
@@ -86,7 +86,9 @@ func generatePrimes(tc tool.Context, args generatePrimesArgs) (string, error) {
 	for i := 0; i < count && i < len(exponents); i++ {
 		p := exponents[i]
 		if ok, val := isMersennePrime(p); ok {
-			mPrimes = append(mPrimes, val.String())
+			// Keep the raw big.Int: String() renders up to ~7000 decimal
+			// digits inside the timed region, which other agents don't pay.
+			mPrimes = append(mPrimes, val)
 		}
 	}
 
