@@ -4,24 +4,38 @@ import time
 import re
 import os
 
-# Define agent endpoints
+# Define agent endpoints.
+# "pipeline" distinguishes how a request reaches the prime calculation:
+#   direct — the agent parses the message itself and calls the tool (no LLM)
+#   llm    — the request is brokered by Gemini tool-calling (ADK)
+# RTT numbers from the two pipelines measure different things and must not
+# be charted as a single comparison.
 AGENTS = {
     "Node.js": {
         "url": "http://localhost:8103/",
+        "pipeline": "direct",
         "parse_fn": lambda text, r_json: parse_node_rust_time(text)
     },
     "Rust": {
         "url": "http://localhost:8104/",
+        "pipeline": "direct",
         "parse_fn": lambda text, r_json: parse_node_rust_time(text)
     },
     "Go": {
         "url": "http://localhost:8102/a2a/invoke",
+        "pipeline": "llm",
         "parse_fn": lambda text, r_json: parse_go_time(r_json)
     },
     "Python": {
         "url": "http://localhost:8101/",
+        "pipeline": "llm",
         "parse_fn": lambda text, r_json: parse_python_time(text, r_json)
     }
+}
+
+PIPELINE_STYLES = {
+    "direct": {"linestyle": "-", "marker": "s", "suffix": "direct"},
+    "llm": {"linestyle": "--", "marker": "^", "suffix": "via Gemini LLM"},
 }
 
 def parse_node_rust_time(text):
@@ -234,15 +248,24 @@ def main():
         print("Calculation times plot saved to prime_calculation_times_1_24.png")
         
         plt.figure(figsize=(12, 7))
-        for lang in AGENTS.keys():
+        for lang, config in AGENTS.items():
             x = [r["n"] for r in results[lang] if r["rtt_ms"] is not None]
             y = [r["rtt_ms"] / 1000.0 for r in results[lang] if r["rtt_ms"] is not None]
+            style = PIPELINE_STYLES[config["pipeline"]]
             if x and y:
-                plt.plot(x, y, 's-', color=colors[lang], label=f"{lang} (A2A Latency)", linewidth=2)
-                
+                plt.plot(
+                    x, y,
+                    color=colors[lang],
+                    linestyle=style["linestyle"],
+                    marker=style["marker"],
+                    label=f"{lang} ({style['suffix']})",
+                    linewidth=2,
+                )
+
         plt.xlabel('Number of Mersenne Primes (N)', fontsize=12)
         plt.ylabel('Total Round-Trip Time (seconds)', fontsize=12)
-        plt.title('A2A Agent Round-Trip Time Comparison (including LLM/Tool calling)', fontsize=14, fontweight='bold')
+        plt.yscale('log')
+        plt.title('A2A Round-Trip Time by Pipeline: direct handlers vs Gemini-brokered agents', fontsize=14, fontweight='bold')
         plt.grid(True, which="both", ls="--", alpha=0.5)
         plt.xticks(range(1, 25))
         plt.legend(fontsize=11)
