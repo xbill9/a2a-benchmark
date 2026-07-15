@@ -1,3 +1,4 @@
+#!/bin/bash
 source $HOME/a2a-benchmark/set_env.sh
 
 cd benchmark-python/agents/bench_master
