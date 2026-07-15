@@ -19,7 +19,7 @@ def find_mersenne_primes(count: int) -> dict:
         dict: A dictionary containing the elapsed time.
     """
     mersenne_primes = []
-    start_time = time.time()
+    start_time = time.perf_counter()
     exponents = [2, 3, 5, 7, 13, 17, 19, 31, 61, 89, 107, 127, 521, 607, 1279, 2203, 2281, 3217, 4253, 4423, 9689, 9941, 11213, 19937, 21701, 23209]
     
     def is_mersenne_prime(p):
@@ -38,9 +38,12 @@ def find_mersenne_primes(count: int) -> dict:
     for i in range(min(count, len(exponents))):
         p = exponents[i]
         if is_mersenne_prime(p):
-            mersenne_primes.append(str((1 << p) - 1))
-            
-    end_time = time.time()
+            # Keep the raw int: str() here both crashes for p >= 19937
+            # (CPython's 4300-digit int->str limit) and adds formatting
+            # cost to the timed region that other agents don't pay.
+            mersenne_primes.append((1 << p) - 1)
+
+    end_time = time.perf_counter()
     elapsed_time = end_time - start_time
     return {"elapsed_time": elapsed_time}
 
