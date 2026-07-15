@@ -214,14 +214,16 @@ async fn handle_rpc(Json(req): Json<JsonRpcRequest>) -> Json<serde_json::Value> 
 
     println!("Starting search for first {} Mersenne primes...", count);
     let (_primes, elapsed) = find_mersenne_primes(count);
-    println!("Found {} primes in {:.2}ms", count, elapsed);
+    println!("Found {} primes in {:.4}ms", count, elapsed);
 
     let response_message = Message {
         kind: "message".to_string(),
         message_id: Uuid::new_v4().to_string(),
         role: "agent".to_string(),
         parts: vec![Part::Text {
-            text: format!("Found first {} Mersenne primes in {:.2}ms.", count, elapsed),
+            // 4 decimals: at 2 decimals sub-10µs runs reported "0.00ms", which
+            // parses to 0.0 and cannot be plotted on the log-scale chart.
+            text: format!("Found first {} Mersenne primes in {:.4}ms.", count, elapsed),
         }],
         context_id: params.message.context_id,
     };

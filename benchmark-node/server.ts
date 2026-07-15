@@ -109,7 +109,7 @@ class PrimeExecutor implements AgentExecutor {
     const endTime = performance.now();
     const elapsed = endTime - startTime;
     
-    console.log(`Found ${primes.length} primes in ${elapsed.toFixed(2)}ms`);
+    console.log(`Found ${primes.length} primes in ${elapsed.toFixed(4)}ms`);
 
     // Create a direct message response.
     const responseMessage: Message = {
@@ -119,7 +119,9 @@ class PrimeExecutor implements AgentExecutor {
       parts: [
         {
           kind: "text", 
-          text: `Found first ${count} Mersenne primes in ${elapsed.toFixed(2)}ms.` 
+          // 4 decimals: at 2 decimals sub-10µs runs reported "0.00ms", which
+          // parses to 0.0 and cannot be plotted on the log-scale chart.
+          text: `Found first ${count} Mersenne primes in ${elapsed.toFixed(4)}ms.`
         }
       ],
       // Associate the response with the incoming request's context.
